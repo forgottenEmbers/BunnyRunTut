@@ -5,6 +5,7 @@ public class BunnyController : MonoBehaviour
 {
     // Private Variables
     private Rigidbody2D bunnyRigidBody;
+    private Animator bunnyAnim;
  
     // Public Variables
     public float bunnyJumpForce = 800f;
@@ -13,6 +14,7 @@ public class BunnyController : MonoBehaviour
 	void Start ()
     {
         bunnyRigidBody = GetComponent<Rigidbody2D>();
+        bunnyAnim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -22,6 +24,8 @@ public class BunnyController : MonoBehaviour
         {
             bunnyRigidBody.AddForce(transform.up * bunnyJumpForce);
         }
+
+        bunnyAnim.SetFloat("vVelocity", bunnyRigidBody.velocity.y);
 
 	}
 }
