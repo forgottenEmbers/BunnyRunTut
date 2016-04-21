@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class BunnyController : MonoBehaviour
 {
@@ -28,4 +29,13 @@ public class BunnyController : MonoBehaviour
         bunnyAnim.SetFloat("vVelocity", bunnyRigidBody.velocity.y);
 
 	}
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            //Application.LoadLevel(Application.loadedLevel);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
 }
