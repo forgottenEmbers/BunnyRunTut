@@ -5,15 +5,17 @@ public class PrefabSpawner : MonoBehaviour {
 
     // Private Variables
     private float nextSpawn = 0f;
+    private float startTime;
 
     // Public Variables
     public Transform prefabToSpawn;
-    public float spawnRate = 1f;
-    public float randomDelay = 1f;
+    public AnimationCurve spawnCurve;
+    public float curveLengthInSeconds = 30f;
+    public float jitter = 0.25f;    
 
-	// Use this for initialization
-	void Start () {
-	
+    // Use this for initialization
+    void Start () {
+        startTime = Time.time;
 	}
 	
 	// Update is called once per frame
@@ -21,7 +23,16 @@ public class PrefabSpawner : MonoBehaviour {
         if (Time.time > nextSpawn)
         {
             Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
-            nextSpawn = Time.time + spawnRate + Random.Range(0, randomDelay);
+            //nextSpawn = Time.time + spawnRate + Random.Range(0, randomDelay);
+
+            float curvePos = (Time.time - startTime) / curveLengthInSeconds;
+            if (curvePos > 1f)
+            {
+                curvePos = 1f;
+                startTime = Time.time;
+            }
+
+            nextSpawn = Time.time + spawnCurve.Evaluate(curvePos) + Random.Range(-jitter, jitter);
         }
 	
 	}
